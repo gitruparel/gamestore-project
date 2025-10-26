@@ -41,6 +41,30 @@ def login():
                 return render_template('login.html', error="Invalid publisher credentials")
     return render_template('login.html')
 
+# ---------------------- REGISTER ----------------------
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        role = request.form['role']
+        username = request.form['username']
+        password = request.form['password']
+        
+        if role == 'publisher':
+            cursor.execute("SELECT * FROM publishers WHERE name = %s", (username,))
+            if cursor.fetchone():
+                return render_template('register.html', error="Publisher name already exists")
+            cursor.execute("INSERT INTO publishers (name, password) VALUES (%s, %s)", (username, password))
+            db.commit()
+            return redirect('/')
+        else:
+            cursor.execute("SELECT * FROM users WHERE username=%s", (username,))
+            if cursor.fetchone():
+                return render_template('register.html', error="Username already exists")
+            cursor.execute("INSERT INTO users (username, password) VALUES (%s, %s)", (username, password))
+            db.commit()
+            return redirect('/')
+    return render_template('register.html')
+
 # ---------------------- PUBLISHER VIEW ----------------------
 @app.route('/publisher')
 def publisher_dashboard():
@@ -64,14 +88,12 @@ def add_game():
     db.commit()
     return redirect('/publisher')
 
-# ---------------------- EDIT GAME ----------------------
 @app.route('/edit_game/<int:game_id>', methods=['GET', 'POST'])
 def edit_game(game_id):
     if 'publisher_id' not in session:
         return redirect('/')
     
     if request.method == 'POST':
-        # Update the game
         title = request.form['title']
         genre = request.form['genre']
         price = request.form['price']
@@ -84,7 +106,6 @@ def edit_game(game_id):
         db.commit()
         return redirect('/publisher')
     else:
-        # Show edit form
         cursor.execute("SELECT * FROM games WHERE game_id = %s AND publisher_id = %s", 
                       (game_id, session['publisher_id']))
         game = cursor.fetchone()
@@ -92,26 +113,33 @@ def edit_game(game_id):
             return redirect('/publisher')
         return render_template('edit_game.html', game=game)
 
-# ---------------------- DELETE GAME ----------------------
 @app.route('/delete_game/<int:game_id>')
 def delete_game(game_id):
     if 'publisher_id' not in session:
         return redirect('/')
     
-    # Delete the game (only if it belongs to this publisher)
     cursor.execute("DELETE FROM games WHERE game_id = %s AND publisher_id = %s", 
                    (game_id, session['publisher_id']))
     db.commit()
     return redirect('/publisher')
 
-# ---------------------- USER VIEW ----------------------
+# ---------------------- USER VIEW (WITH FILTERING) ----------------------
 @app.route('/user')
 def user_dashboard():
     if 'user_id' not in session:
         return redirect('/')
-    cursor.execute("SELECT * FROM games")
+    
+    # Get search parameter only
+    search = request.args.get('search', '')
+    
+    # Build query with search
+    if search:
+        cursor.execute("SELECT * FROM games WHERE title LIKE %s", (f"%{search}%",))
+    else:
+        cursor.execute("SELECT * FROM games")
+    
     games = cursor.fetchall()
-    return render_template('user_dashboard.html', games=games)
+    return render_template('user_dashboard.html', games=games, search=search)
 
 @app.route('/add_to_cart/<int:game_id>')
 def add_to_cart(game_id):
@@ -163,6 +191,47 @@ def purchases():
     """, (uid,))
     purchases = cursor.fetchall()
     return render_template('purchases.html', purchases=purchases)
+
+# ---------------------- PROFILE ----------------------
+@app.route('/profile/<who>', methods=['GET', 'POST'])
+def profile(who):
+    logged_in_id = session.get('user_id') if who == 'user' else session.get('publisher_id')
+    if not logged_in_id:
+        return redirect('/')
+    
+    if request.method == 'POST':
+        new_username = request.form['username']
+        new_password = request.form['password']
+        if who == 'user':
+            cursor.execute("UPDATE users SET username=%s, password=%s WHERE user_id=%s", 
+                         (new_username, new_password, logged_in_id))
+        else:
+            cursor.execute("UPDATE publishers SET name=%s, password=%s WHERE publisher_id=%s", 
+                         (new_username, new_password, logged_in_id))
+        db.commit()
+        return redirect(url_for('profile', who=who))
+    
+    # Load profile
+    if who == 'user':
+        cursor.execute("SELECT * FROM users WHERE user_id=%s", (logged_in_id,))
+        profile = cursor.fetchone()
+    else:
+        cursor.execute("SELECT * FROM publishers WHERE publisher_id=%s", (logged_in_id,))
+        profile = cursor.fetchone()
+    return render_template('profile.html', profile=profile, who=who)
+
+@app.route('/delete_account/<who>', methods=['POST'])
+def delete_account(who):
+    logged_in_id = session.get('user_id') if who == 'user' else session.get('publisher_id')
+    if not logged_in_id:
+        return redirect('/')
+    if who == 'user':
+        cursor.execute("DELETE FROM users WHERE user_id=%s", (logged_in_id,))
+    else:
+        cursor.execute("DELETE FROM publishers WHERE publisher_id=%s", (logged_in_id,))
+    db.commit()
+    session.clear()
+    return redirect('/')
 
 # ---------------------- LOGOUT ----------------------
 @app.route('/logout')

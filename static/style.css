@@ -1,4 +1,6 @@
-/* = General = */
+/* ============================================
+   GENERAL STYLES
+   ============================================ */
 * {
   box-sizing: border-box;
 }
@@ -13,24 +15,33 @@ body {
   min-height: 100vh;
 }
 
-/* = Header = */
+/* ============================================
+   HEADER & NAVIGATION
+   ============================================ */
 .header {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   padding: 25px 50px;
   border-bottom: 2px solid rgba(0, 255, 180, 0.2);
-  position: relative;
   background: rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(10px);
+  gap: 20px;
+  
+  /* STICKY HEADER - NEW */
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
 .logo {
-  height: 100px; /* 3x bigger: was 80px */
+  width: 300px;
+  height: auto;
   filter: drop-shadow(0 0 15px rgba(0,255,180,0.5));
   transition: transform 0.4s ease, filter 0.4s ease;
   cursor: pointer;
-  /* Removed floating animation */
+  flex-shrink: 0;
+  margin-right: 20px;
 }
 
 .logo:hover {
@@ -38,61 +49,116 @@ body {
   filter: drop-shadow(0 0 25px rgba(0,255,180,0.8));
 }
 
-/* = Header Buttons = */
-.cart-btn, .logout-btn, .back-btn {
-  position: absolute;
-  right: 180px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: linear-gradient(135deg, #00ffb3, #00ccff);
-  padding: 12px 25px;
-  border-radius: 12px;
-  color: #000;
-  text-decoration: none;
-  font-weight: 600;
+/* Search Bar */
+.search-form {
+  display: flex;
+  gap: 10px;
+  flex: 1;
+  max-width: 500px;
+}
+
+.search-input {
+  flex: 1;
+  padding: 12px 20px;
+  border: 2px solid rgba(255,255,255,0.15);
+  border-radius: 25px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
   font-size: 0.95rem;
   transition: all 0.3s ease;
+  outline: none;
+}
+
+.search-input::placeholder {
+  color: rgba(255,255,255,0.5);
+}
+
+.search-input:focus {
+  border-color: #00ffb3;
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 0 20px rgba(0,255,180,0.2);
+}
+
+.search-btn {
+  padding: 12px 25px;
+  background: linear-gradient(135deg, #00ffb3, #00ccff);
+  border: none;
+  border-radius: 25px;
+  color: #000;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
   box-shadow: 0 4px 15px rgba(0,255,180,0.3);
+  white-space: nowrap;
+}
+
+.search-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 25px rgba(0,255,180,0.6);
+}
+
+/* Header Buttons */
+.profile-btn, .cart-btn, .logout-btn, .back-btn {
+  padding: 12px 20px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+  display: inline-block;
+  position: relative;
+}
+
+.profile-btn {
+  background: linear-gradient(135deg, #a29bfe, #6c5ce7);
+  box-shadow: 0 4px 15px rgba(108,92,231,0.3);
+  color: #fff;
+}
+
+.cart-btn {
+  background: linear-gradient(135deg, #00ffb3, #00ccff);
+  box-shadow: 0 4px 15px rgba(0,255,180,0.3);
+  color: #000;
 }
 
 .logout-btn {
-  right: 40px;
   background: linear-gradient(135deg, #ff6b6b, #ff4757);
   box-shadow: 0 4px 15px rgba(255,107,107,0.3);
+  color: #fff;
 }
 
 .back-btn {
-  left: 40px;
-  right: auto;
   background: linear-gradient(135deg, #a29bfe, #6c5ce7);
   box-shadow: 0 4px 15px rgba(108,92,231,0.3);
+  color: #fff;
 }
 
-.cart-btn:hover, .back-btn:hover {
-  transform: translateY(-50%) scale(1.05);
+.profile-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 25px rgba(108,92,231,0.5);
+}
+
+.cart-btn:hover {
+  transform: scale(1.05);
   box-shadow: 0 6px 25px rgba(0,255,180,0.5);
 }
 
 .logout-btn:hover {
-  transform: translateY(-50%) scale(1.05);
+  transform: scale(1.05);
   box-shadow: 0 6px 25px rgba(255,107,107,0.5);
 }
 
 .back-btn:hover {
+  transform: scale(1.05);
   box-shadow: 0 6px 25px rgba(108,92,231,0.5);
 }
 
-/* = Glass effect - NO HOVER EFFECTS = */
-.glass {
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(15px);
-  border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-  /* Removed hover effects */
-}
-
-/* = Main layout = */
+/* ============================================
+   MAIN LAYOUT
+   ============================================ */
 .main-content {
   display: flex;
   flex-direction: column;
@@ -103,7 +169,133 @@ body {
   margin: 0 auto;
 }
 
-/* = Add Game form = */
+.glass {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(15px);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+}
+
+/* ============================================
+   GAME LISTINGS
+   ============================================ */
+.game-list {
+  width: 100%;
+  max-width: 1300px;
+}
+
+.game-list h2 {
+  margin-bottom: 35px;
+  font-weight: 600;
+  text-align: center;
+  font-size: 2rem;
+  background: linear-gradient(135deg, #00ffb3, #00ccff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  padding: 0 20px;
+}
+
+.game-card {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+  min-height: 200px;
+}
+
+.game-info h3 {
+  margin: 15px 0 8px;
+  color: #fff;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.genre {
+  color: #aaa;
+  font-size: 0.95rem;
+  margin: 5px 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.price {
+  margin-top: 10px;
+  font-size: 1.5rem;
+  color: #00ffb3;
+  font-weight: 700;
+}
+
+/* Game Action Buttons */
+.game-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+  justify-content: center;
+}
+
+.buy-btn, .edit-btn, .delete-btn {
+  display: inline-block;
+  padding: 12px 30px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.buy-btn {
+  margin-top: 15px;
+  background: linear-gradient(135deg, #00ffb3, #00ccff);
+  color: #000;
+  box-shadow: 0 4px 15px rgba(0,255,180,0.3);
+}
+
+.buy-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 25px rgba(0,255,180,0.6);
+}
+
+.edit-btn {
+  background: linear-gradient(135deg, #a29bfe, #6c5ce7);
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(108,92,231,0.3);
+  flex: 1;
+  padding: 10px 20px;
+  font-size: 0.9rem;
+}
+
+.edit-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 25px rgba(108,92,231,0.6);
+}
+
+.delete-btn {
+  background: linear-gradient(135deg, #ff6b6b, #ff4757);
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(255,107,107,0.3);
+  flex: 1;
+  padding: 10px 20px;
+  font-size: 0.9rem;
+}
+
+.delete-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 25px rgba(255,107,107,0.6);
+}
+
+/* ============================================
+   FORMS
+   ============================================ */
 .add-game {
   padding: 35px;
   width: 450px;
@@ -164,83 +356,9 @@ body {
   box-shadow: 0 6px 25px rgba(0,255,200,0.5);
 }
 
-/* = Game Grid = */
-.game-list {
-  width: 100%;
-  max-width: 1300px;
-}
-
-.game-list h2 {
-  margin-bottom: 35px;
-  font-weight: 600;
-  text-align: center;
-  font-size: 2rem;
-  background: linear-gradient(135deg, #00ffb3, #00ccff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.game-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 30px;
-  padding: 0 20px;
-}
-
-.game-card {
-  padding: 30px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  text-align: center;
-  min-height: 200px;
-  /* No hover effect on cards */
-}
-
-.game-info h3 {
-  margin: 15px 0 8px;
-  color: #fff;
-  font-size: 1.4rem;
-  font-weight: 600;
-}
-
-.genre {
-  color: #aaa;
-  font-size: 0.95rem;
-  margin: 5px 0;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.price {
-  margin-top: 10px;
-  font-size: 1.5rem;
-  color: #00ffb3;
-  font-weight: 700;
-}
-
-/* = Buttons - KEEP HOVER EFFECTS = */
-.buy-btn {
-  display: inline-block;
-  margin-top: 15px;
-  background: linear-gradient(135deg, #00ffb3, #00ccff);
-  padding: 12px 30px;
-  border-radius: 12px;
-  color: #000;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(0,255,180,0.3);
-}
-
-.buy-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 25px rgba(0,255,180,0.6);
-}
-
-/* = Cart Specific Styles = */
+/* ============================================
+   CART
+   ============================================ */
 .cart-section {
   width: 90%;
   max-width: 900px;
@@ -312,7 +430,9 @@ body {
   box-shadow: 0 6px 25px rgba(0,255,180,0.6);
 }
 
-/* = Table Styles - MORE PADDING = */
+/* ============================================
+   TABLES
+   ============================================ */
 .table-container {
   width: 90%;
   max-width: 1100px;
@@ -339,7 +459,7 @@ table {
 }
 
 table th, table td {
-  padding: 20px 25px; /* Increased padding */
+  padding: 20px 25px;
   text-align: left;
   border-bottom: 1px solid rgba(255,255,255,0.1);
 }
@@ -351,7 +471,7 @@ table th {
   color: #00ffb3;
   text-transform: uppercase;
   letter-spacing: 1.5px;
-  padding: 25px; /* Extra padding for headers */
+  padding: 25px;
 }
 
 table tr:hover {
@@ -362,7 +482,9 @@ table tr:last-child td {
   border-bottom: none;
 }
 
-/* = Empty State = */
+/* ============================================
+   EMPTY STATE
+   ============================================ */
 .empty-state {
   text-align: center;
   padding: 60px 20px;
@@ -374,7 +496,9 @@ table tr:last-child td {
   margin-bottom: 15px;
 }
 
-/* LOGIN PAGE STYLES */
+/* ============================================
+   LOGIN PAGE
+   ============================================ */
 .login-body {
   background: radial-gradient(circle at 30% 30%, #1a1a2e, #0a0a0f 70%);
   color: #fff;
@@ -387,11 +511,7 @@ table tr:last-child td {
   position: relative;
   overflow: hidden;
 }
-select.login-input option {
-  background: #2a2a3e; /* Dark gray background */
-  color: #fff; /* White text */
-  padding: 10px;
-}
+
 .login-body::before {
   content: '';
   position: absolute;
@@ -424,7 +544,7 @@ select.login-input option {
 }
 
 .logo-main {
-  width: 250px;
+  width: 150px;
   height: auto;
   margin-bottom: 15px;
   filter: drop-shadow(0 0 15px rgba(0,255,180,0.5));
@@ -469,6 +589,12 @@ select.login-input option {
   border-radius: 12px;
   font-size: 1rem;
   transition: all 0.3s ease;
+}
+
+select.login-input option {
+  background: #2a2a3e;
+  color: #fff;
+  padding: 10px;
 }
 
 .login-input:focus, select.login-input:focus {
@@ -518,10 +644,34 @@ select.login-input option {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* = Responsive Design = */
-@media (max-width: 768px) {
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+@media (max-width: 1200px) {
+  .header {
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+  
+  .search-form {
+    order: 3;
+    flex-basis: 100%;
+    max-width: 100%;
+  }
+  
   .logo {
-    height: 160px; /* Smaller on mobile */
+    width: 120px;
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: 20px;
+    gap: 10px;
+  }
+  
+  .logo {
+    width: 100px;
   }
   
   .game-grid {
@@ -532,65 +682,8 @@ select.login-input option {
     width: 90%;
   }
   
-  .cart-btn {
-    right: 140px;
+  .profile-btn, .cart-btn, .logout-btn, .back-btn {
     padding: 10px 15px;
     font-size: 0.85rem;
   }
-  
-  .logout-btn, .back-btn {
-    padding: 10px 15px;
-    font-size: 0.85rem;
-  }
-  
-  .back-btn {
-    left: 20px;
-  }
-  
-  .logout-btn {
-    right: 20px;
-  }
-}
-
-
-/* = Game Actions Buttons = */
-.game-actions {
-  display: flex;
-  gap: 10px;
-  margin-top: 15px;
-  justify-content: center;
-}
-
-.edit-btn, .delete-btn {
-  display: inline-block;
-  padding: 10px 20px;
-  border-radius: 10px;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 0.9rem;
-  transition: all 0.3s ease;
-  flex: 1;
-  text-align: center;
-}
-
-.edit-btn {
-  background: linear-gradient(135deg, #a29bfe, #6c5ce7);
-  color: #fff;
-  box-shadow: 0 4px 15px rgba(108,92,231,0.3);
-}
-
-.edit-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 25px rgba(108,92,231,0.6);
-}
-
-.delete-btn {
-  background: linear-gradient(135deg, #ff6b6b, #ff4757);
-  color: #fff;
-  box-shadow: 0 4px 15px rgba(255,107,107,0.3);
-}
-
-.delete-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 25px rgba(255,107,107,0.6);
 }

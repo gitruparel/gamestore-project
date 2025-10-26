@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Register - GameStore</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="login-body">
+  <div class="login-card">
+    <img src="/static/logo.png" alt="GameStore Logo" class="logo-main">
+    <h2 class="login-title">Create Account</h2>
+    <p class="login-subtitle">Join GameStore today!</p>
+    
+    <form method="post" class="login-form">
+      <label for="role">Register as</label>
+      <select name="role" id="role" class="login-input" required>
+        <option value="user">User</option>
+        <option value="publisher">Publisher</option>
+      </select>
+      
+      <label for="username">Username</label>
+      <input type="text" name="username" id="username" class="login-input" 
+             placeholder="Enter your username" required>
+      
+      <label for="password">Password</label>
+      <input type="password" name="password" id="password" class="login-input" 
+             placeholder="Enter your password" required>
+      
+      <button type="submit" class="login-btn">Create Account</button>
+      
+      {% if error %}
+      <p class="error">{{ error }}</p>
+      {% endif %}
+    </form>
+    
+    <p style="margin-top: 20px; color: #aaa; font-size: 0.9em;">
+      Already have an account? 
+      <a href="/" style="color: #00ffb3; text-decoration: none; font-weight: 600;">Sign In</a>
+    </p>
+  </div>
+</body>
+</html>
