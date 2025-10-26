@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit Game - {{ game.title }}</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="header">
+    <a href="/publisher"><img src="/static/logo.png" class="logo"></a>
+    <a href="/publisher" class="back-btn">⬅ Back</a>
+    <a href="/logout" class="logout-btn">Logout</a>
+  </header>
+  <main class="main-content">
+    <section class="add-game glass">
+      <h2>Edit Game</h2>
+      <form action="/edit_game/{{ game.game_id }}" method="post">
+        <input type="text" name="title" placeholder="Title" value="{{ game.title }}" required>
+        <input type="text" name="genre" placeholder="Genre" value="{{ game.genre }}" required>
+        <input type="number" step="0.01" name="price" placeholder="Price ($)" value="{{ game.price }}" required>
+        <button type="submit">Update Game</button>
+      </form>
+    </section>
+  </main>
+</body>
+</html>

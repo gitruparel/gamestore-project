@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, session
 import mysql.connector
 
 app = Flask(__name__)
-app.secret_key = "supersecretkey"  # for session handling
+app.secret_key = "supersecretkey"
 
 # MySQL connection
 db = mysql.connector.connect(
@@ -20,7 +20,7 @@ def login():
         role = request.form['role']
         username = request.form['username']
         password = request.form['password']
-
+        
         if role == 'user':
             cursor.execute("SELECT * FROM users WHERE username=%s AND password=%s", (username, password))
             user = cursor.fetchone()
@@ -30,7 +30,6 @@ def login():
                 return redirect(url_for('user_dashboard'))
             else:
                 return render_template('login.html', error="Invalid user credentials")
-
         elif role == 'publisher':
             cursor.execute("SELECT * FROM publishers WHERE name=%s AND password=%s", (username, password))
             pub = cursor.fetchone()
@@ -40,9 +39,7 @@ def login():
                 return redirect(url_for('publisher_dashboard'))
             else:
                 return render_template('login.html', error="Invalid publisher credentials")
-
     return render_template('login.html')
-
 
 # ---------------------- PUBLISHER VIEW ----------------------
 @app.route('/publisher')
@@ -62,10 +59,50 @@ def add_game():
     title = request.form['title']
     genre = request.form['genre']
     price = request.form['price']
-    cursor.execute("INSERT INTO games (title, genre, price, publisher_id) VALUES (%s, %s, %s, %s)", (title, genre, price, pid))
+    cursor.execute("INSERT INTO games (title, genre, price, publisher_id) VALUES (%s, %s, %s, %s)", 
+                   (title, genre, price, pid))
     db.commit()
     return redirect('/publisher')
 
+# ---------------------- EDIT GAME ----------------------
+@app.route('/edit_game/<int:game_id>', methods=['GET', 'POST'])
+def edit_game(game_id):
+    if 'publisher_id' not in session:
+        return redirect('/')
+    
+    if request.method == 'POST':
+        # Update the game
+        title = request.form['title']
+        genre = request.form['genre']
+        price = request.form['price']
+        
+        cursor.execute("""
+            UPDATE games 
+            SET title = %s, genre = %s, price = %s 
+            WHERE game_id = %s AND publisher_id = %s
+        """, (title, genre, price, game_id, session['publisher_id']))
+        db.commit()
+        return redirect('/publisher')
+    else:
+        # Show edit form
+        cursor.execute("SELECT * FROM games WHERE game_id = %s AND publisher_id = %s", 
+                      (game_id, session['publisher_id']))
+        game = cursor.fetchone()
+        if not game:
+            return redirect('/publisher')
+        return render_template('edit_game.html', game=game)
+
+# ---------------------- DELETE GAME ----------------------
+@app.route('/delete_game/<int:game_id>')
+def delete_game(game_id):
+    if 'publisher_id' not in session:
+        return redirect('/')
+    
+    # Delete the game (only if it belongs to this publisher)
+    cursor.execute("DELETE FROM games WHERE game_id = %s AND publisher_id = %s", 
+                   (game_id, session['publisher_id']))
+    db.commit()
+    return redirect('/publisher')
 
 # ---------------------- USER VIEW ----------------------
 @app.route('/user')
@@ -91,7 +128,7 @@ def cart():
         return redirect('/')
     uid = session['user_id']
     cursor.execute("""
-        SELECT c.cart_id, g.title, g.genre, g.price
+        SELECT c.cart_id, g.title, g.genre, g.price, g.game_id
         FROM cart c
         JOIN games g ON c.game_id = g.game_id
         WHERE c.user_id = %s
@@ -127,13 +164,11 @@ def purchases():
     purchases = cursor.fetchall()
     return render_template('purchases.html', purchases=purchases)
 
-
 # ---------------------- LOGOUT ----------------------
 @app.route('/logout')
 def logout():
     session.clear()
     return redirect('/')
-
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -31,6 +31,11 @@
             <p class="genre">{{ g.genre }}</p>
             <p class="price">${{ "%.2f"|format(g.price) }}</p>
           </div>
+          <div class="game-actions">
+            <a href="/edit_game/{{ g.game_id }}" class="edit-btn">✏️ Edit</a>
+            <a href="/delete_game/{{ g.game_id }}" class="delete-btn" 
+               onclick="return confirm('Are you sure you want to delete {{ g.title }}?')">🗑️ Delete</a>
+          </div>
         </div>
         {% endfor %}
       </div>

@@ -551,3 +551,46 @@ select.login-input option {
     right: 20px;
   }
 }
+
+
+/* = Game Actions Buttons = */
+.game-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+  justify-content: center;
+}
+
+.edit-btn, .delete-btn {
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  flex: 1;
+  text-align: center;
+}
+
+.edit-btn {
+  background: linear-gradient(135deg, #a29bfe, #6c5ce7);
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(108,92,231,0.3);
+}
+
+.edit-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 25px rgba(108,92,231,0.6);
+}
+
+.delete-btn {
+  background: linear-gradient(135deg, #ff6b6b, #ff4757);
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(255,107,107,0.3);
+}
+
+.delete-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 25px rgba(255,107,107,0.6);
+}
