@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Profile - GameStore</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="login-body">
+  <div class="login-card">
+    <img src="/static/logo.png" alt="GameStore Logo" class="logo-main">
+    <h2 class="login-title">Your Profile</h2>
+    <p class="login-subtitle">{{ 'Publisher' if who == 'publisher' else 'User' }} Account</p>
+    
+    <form method="post" class="login-form">
+      <label>Username</label>
+      <input type="text" name="username" class="login-input" 
+             value="{{ profile.username if who == 'user' else profile.name }}" required>
+      
+      <label>Password</label>
+      <input type="password" name="password" class="login-input" 
+             value="{{ profile.password }}" required>
+      
+      <button type="submit" class="login-btn">💾 Update Profile</button>
+    </form>
+    
+    <form method="post" action="/delete_account/{{ who }}" style="margin-top: 20px;">
+      <button type="submit" class="login-btn" 
+              style="background: linear-gradient(135deg, #ff6b6b, #ff4757);"
+              onclick="return confirm('Are you sure you want to delete your account? This cannot be undone!')">
+        🗑️ Delete Account
+      </button>
+    </form>
+    
+    <div style="margin-top: 20px;">
+      <a href="/{{ who }}" class="buy-btn" style="display: inline-block; margin-top: 10px;">
+        ⬅ Back to Dashboard
+      </a>
+    </div>
+  </div>
+</body>
+</html>

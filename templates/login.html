@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>GameStore Login</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="login-body">
+
+  <div class="login-card">
+    <img src="/static/logo.png" alt="GameStore Logo" class="logo-main">
+
+    <h2 class="login-title">Sign in to GameStore</h2>
+    <p class="login-subtitle">Welcome back! Please enter your details.</p>
+
+    <form method="post" class="login-form">
+      <label for="role">Login as</label>
+      <select name="role" id="role" class="login-input" required>
+        <option value="user">User</option>
+        <option value="publisher">Publisher</option>
+      </select>
+
+      <label for="username">Username</label>
+      <input type="text" name="username" id="username" class="login-input" placeholder="Enter your username" required>
+
+      <label for="password">Password</label>
+      <input type="password" name="password" id="password" class="login-input" placeholder="Enter your password" required>
+
+      <button type="submit" class="login-btn">Sign In</button>
+
+      {% if error %}
+      <p class="error">{{ error }}</p>
+      {% endif %}
+    </form>
+    <p style="margin-top: 20px; color: #aaa; font-size: 0.9em;">
+      Don't have an account? 
+      <a href="/register" style="color: #00ffb3; text-decoration: none; font-weight: 600;">Register</a>
+    </p>
+
+    <footer class="login-footer">
+      <p>Gamestore - Freedom to Play!</p>
+    </footer>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>GameStore</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="header">
+    <a href="/user"><img src="/static/logo.png" alt="GameStore Logo" class="logo"></a>
+    
+    <!-- Search Bar -->
+    <form method="get" action="/user" class="search-form">
+      <input type="text" name="search" placeholder="🔍 Search games..." 
+             value="{{ search }}" class="search-input">
+      <button type="submit" class="search-btn">Search</button>
+    </form>
+    
+    <a href="/profile/user" class="profile-btn">👤 Profile</a>
+    <a href="/cart" class="cart-btn">🛒 Cart</a>
+    <a href="/logout" class="logout-btn">Logout</a>
+  </header>
+  
+  <main class="main-content">
+    <section class="game-list">
+      <h2>Available Games</h2>
+      {% if games %}
+        <div class="game-grid">
+          {% for g in games %}
+          <div class="game-card glass">
+            <div class="game-info">
+              <h3>{{ g.title }}</h3>
+              <p class="genre">{{ g.genre }}</p>
+              <p class="price">${{ "%.2f"|format(g.price) }}</p>
+            </div>
+            <a href="/add_to_cart/{{ g.game_id }}" class="buy-btn">Add to Cart</a>
+          </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="empty-state">
+          <h3>No games found</h3>
+          <p>Try a different search term</p>
+        </div>
+      {% endif %}
+    </section>
+  </main>
+</body>
+</html>

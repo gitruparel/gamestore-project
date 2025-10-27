@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Purchase History</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="header">
+    <a href="/user"><img src="/static/logo.png" class="logo"></a>
+    <a href="/user" class="back-btn">⬅ Back to Store</a>
+    <a href="/logout" class="logout-btn">Logout</a>
+  </header>
+  <main class="main-content">
+    <section class="table-container glass">
+      <h2>📦 Your Purchases</h2>
+      {% if purchases %}
+      <table>
+        <thead>
+          <tr>
+            <th>Purchase ID</th>
+            <th>Game Title</th>
+            <th>Genre</th>
+            <th>Price</th>
+            <th>Purchase Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for p in purchases %}
+          <tr>
+            <td>#{{ p.purchase_id }}</td>
+            <td>{{ p.title }}</td>
+            <td>{{ p.genre }}</td>
+            <td>${{ "%.2f"|format(p.price) }}</td>
+            <td>{{ p.purchase_date.strftime('%B %d, %Y at %I:%M %p') }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+        <div class="empty-state">
+          <h3>No purchases yet</h3>
+          <p>Start shopping to see your purchase history!</p>
+          <a href="/user" class="buy-btn" style="margin-top: 20px;">Browse Games</a>
+        </div>
+      {% endif %}
+    </section>
+  </main>
+</body>
+</html>

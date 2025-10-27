@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>GameStore</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="header">
+    <img src="/static/logo.png" alt="GameStore Logo" class="logo">
+  </header>
+
+  <main class="main-content">
+    <section class="add-game glass">
+      <h2>Add a New Game</h2>
+      <form action="/add_game" method="post">
+        <input type="text" name="title" placeholder="Title" required>
+        <input type="text" name="genre" placeholder="Genre" required>
+        <input type="number" step="0.01" name="price" placeholder="Price ($)" required>
+        <button type="submit">Add Game</button>
+      </form>
+    </section>
+
+    <section class="game-list">
+      <h2>Available Games</h2>
+      <div class="game-grid">
+        {% for g in games %}
+        <div class="game-card glass">
+          <div class="game-info">
+            <h3>{{ g.title }}</h3>
+            <p class="genre">{{ g.genre }}</p>
+            <p class="price">${{ g.price }}</p>
+          </div>
+          <a href="/buy/{{ g.game_id }}" class="buy-btn">Buy</a>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+  </main>
+</body>
+</html>

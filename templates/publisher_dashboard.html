@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Publisher Dashboard</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="header">
+    <a href="/publisher"><img src="/static/logo.png" class="logo"></a>
+    <div style="flex: 1;"></div> <!-- Spacer -->
+    <a href="/profile/publisher" class="profile-btn">👤 Profile</a>
+    <a href="/logout" class="logout-btn">Logout</a>
+  </header>
+  <main class="main-content">
+    <section class="add-game glass">
+      <h2>Publish New Game</h2>
+      <form action="/add_game" method="post">
+        <input type="text" name="title" placeholder="Title" required>
+        <input type="text" name="genre" placeholder="Genre" required>
+        <input type="number" step="0.01" name="price" placeholder="Price ($)" required>
+        <button type="submit">Publish</button>
+      </form>
+    </section>
+    <section class="game-list">
+      <h2>Your Published Games</h2>
+      <div class="game-grid">
+        {% for g in games %}
+        <div class="game-card glass">
+          <div class="game-info">
+            <h3>{{ g.title }}</h3>
+            <p class="genre">{{ g.genre }}</p>
+            <p class="price">${{ "%.2f"|format(g.price) }}</p>
+          </div>
+          <div class="game-actions">
+            <a href="/edit_game/{{ g.game_id }}" class="edit-btn">✏️ Edit</a>
+            <a href="/delete_game/{{ g.game_id }}" class="delete-btn" 
+               onclick="return confirm('Are you sure you want to delete {{ g.title }}?')">🗑️ Delete</a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Buy Game - GameStore</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="overlay"></div>
+
+  <header>
+    <h1>Buy {{ game.title }}</h1>
+  </header>
+
+  <main class="content">
+    <section class="glass">
+      <p><strong>Genre:</strong> {{ game.genre }}</p>
+      <p><strong>Price:</strong> ${{ game.price }}</p>
+
+      <form method="post">
+        <input type="text" name="buyer_name" placeholder="Enter your name" required>
+        <button type="submit">Confirm Purchase</button>
+      </form>
+    </section>
+
+    <a href="/" class="back-btn">⬅ Back to Store</a>
+  </main>
+</body>
+</html>
